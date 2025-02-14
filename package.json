@@ -1,0 +1,28 @@
+{
+  "name": "es-ccs-proxy",
+  "version": "1.0.8",
+  "private": true,
+  "description": "elasticsearch local proxy",
+  "license": "MIT",
+  "author": "Patrick Mueller <pmuellr@apache.org> (https://github.com/pmuellr)",
+  "homepage": "https://github.com/pmuellr/es-ccs-proxy",
+  "bin": {
+    "es-ccs-proxy": "es-ccs-proxy.mjs"
+  },
+  "scripts": {
+    "start": "node ./es-ccs-proxy.mjs",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pmuellr/es-ccs-proxy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pmuellr/es-ccs-proxy/issues"
+  },
+  "dependencies": {
+    "http-proxy": "^1.18.1",
+    "meow": "^12.0.1",
+    "toml": "^3.0.0"
+  }
+}
