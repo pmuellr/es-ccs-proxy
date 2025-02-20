@@ -23,3 +23,9 @@ export interface Config {
   ccs_server: Server
   fileName:   string
 }
+
+export interface RequestTranslator {
+  isCCS: boolean
+  testCCSRequest(path: string[]): boolean
+  fixPath(path: string[]): string[]
+}

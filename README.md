@@ -38,7 +38,28 @@ options:
 | `-p`  | `--port <num>`       | use this port number instead of default 19200
 | `-c`  | `--config <file>`    | use this config file instead of `~/.es-ccs-proxy.toml`
 
-    es-ccs-proxy: handling servers:
+Run ES locally on a different port, for instance:
+
+    yarn es snapshot --license trial -E http.port=19200
+
+Run `es-ccs-proxy` with the port for the `server` as 19200.  It runs 
+on port 9200 by default.
+
+Run Kibana as usual.
+
+To access a CCS resource, change the colons (`:`) in the index pattern
+to `-colon-`, and prefix the index pattern with `remote--`.  This is
+the key to having an index recognized by the proxy as being a CCS 
+resource, while also keeping the local Kibana from realizing it's a 
+CCS resource.
+
+For example, the CCS index pattern:
+
+    global-stuff-*:logs-es-ccs-proxy*
+
+should be referred to as:
+
+    remote--global-stuff-*-colon-logs-es-ccs-proxy*
 
 
 config file
@@ -54,24 +75,18 @@ To make your config file mode '600', use the command:
 The following properties can be used:
 
 - `port`               - the port to run on, overrideable on the command line
-- `server`             - URL to the non-CCS server
-- `server-api-key`     - API key of the non-CCS server
-- `ccs-server`         - URL to the CCS server
-- `ccs-server-api-key` - API key of the CCS server
+- `server.url`         - URL to the non-CCS ES server
+- `ccs-server.url`     - URL to the CCS ES server
+- `ccs-server.api_key` - API key of the CCS ES server
 
-
-The `server` property is an array of objects.  The default server objects
-configured are specified as:
-
-    port = 9200
+Here's an example `toml` file:
 
     [server]
-    url     = "http://localhost:19200"
-    api_key = "1234..."
+    url = "http://elastic:changeme@localhost:19200"
 
     [ccs_server]
-    url     = "http://example.com:9200"
-    api_key = "5678..."
+    url     = "https://example.com"
+    api_key = "...=="
 
 
 change log
@@ -80,6 +95,10 @@ change log
 #### 1.0.0 - under development
 
 - under development, not yet working
+- getting close, you can now do queries in DevTools, but Discover isn't
+  working because we'll have to deal with async searches, making this a lot
+  more complex
+
 
 license
 ================================================================================
