@@ -95,9 +95,7 @@ change log
 #### 1.0.0 - under development
 
 - under development, not yet working
-- getting close, you can now do queries in DevTools, but Discover isn't
-  working because we'll have to deal with async searches, making this a lot
-  more complex
+- holy crap, it's now working with Discover; next steps, set up the kibana serverless o11y tf stuff to use this
 
 
 license

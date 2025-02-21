@@ -25,7 +25,12 @@ export interface Config {
 }
 
 export interface RequestTranslator {
-  isCCS: boolean
-  testCCSRequest(path: string[]): boolean
+  // returns whether this is a CCS request
+  isCCS(): boolean
+
+  // returns whether this is an async search request (initial)
+  isAsyncSearchInitial(): boolean
+
+  // given the path of the request, returns the CCS path
   fixPath(path: string[]): string[]
 }
