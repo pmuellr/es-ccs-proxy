@@ -3,14 +3,26 @@ es-ccs-proxy - Elasticsearch CCS Proxy
 
 `es-ccs-proxy` is a proxy to elasticsearch.  It forwards non-CCS traffic
 to one elasticsearch cluster, and CCS traffic to another.  This lets you
-"emulate" having CCS set up in an elasticsearch server.
+"emulate" having CCS set up in an elasticsearch server.  It's not perfect,
+but aims to be good enough to use CCS for Discover and Alerting, while 
+maintaining the searches, data views, dashboards, rules, etc in the
+local ES.
+
+```mermaid
+flowchart LR
+    R[elasticsearch request] --> A
+    A[es-ccs-proxy] --> B[local elasticsearch]
+    B --> A
+    A --> C[remote elasticsearch with CCS]
+    C --> A
+```
 
 This is all meant for development-time use, not production.  Thus, it has
 many constraints:
 
 - it only runs on http, not https - the actual servers pointed to can be
 http or https
-- it only uses API keys to access the server
+- it only uses API keys to access the CCS server
 - it only accepts connections from localhost
 
 
@@ -35,15 +47,15 @@ options:
 | `-h`  | `--help`             | display help
 | `-d`  | `--debug`            | generate verbose output when running
 | `-v`  | `--version`          | print version
-| `-p`  | `--port <num>`       | use this port number instead of default 19200
+| `-p`  | `--port <num>`       | use this port number instead of default 9200
 | `-c`  | `--config <file>`    | use this config file instead of `~/.es-ccs-proxy.toml`
 
 Run ES locally on a different port, for instance:
 
     yarn es snapshot --license trial -E http.port=19200
 
-Run `es-ccs-proxy` with the port for the `server` as 19200.  It runs 
-on port 9200 by default.
+Run `es-ccs-proxy` with the port for the local `server` as 19200.  The
+`es-ccs-proxy` itself runs on port 9200 by default.
 
 Run Kibana as usual.
 
@@ -74,8 +86,8 @@ To make your config file mode '600', use the command:
 
 The following properties can be used:
 
-- `port`               - the port to run on, overrideable on the command line
-- `server.url`         - URL to the non-CCS ES server
+- `port`               - the port to run on, overrideable on the command line, default 9200
+- `server.url`         - URL to the local ES server, with user/pass included
 - `ccs-server.url`     - URL to the CCS ES server
 - `ccs-server.api_key` - API key of the CCS ES server
 
